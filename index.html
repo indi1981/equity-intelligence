@@ -10,6 +10,9 @@
 *{box-sizing:border-box}body{margin:0;background:linear-gradient(180deg,#070c17,#0c1426);color:var(--txt);font:14px Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial}
 a{color:#a8caff}.layout{display:grid;grid-template-columns:250px 1fr;min-height:100vh}.side{padding:22px 16px;border-right:1px solid var(--line);background:#09101d}.brand{font-size:18px;font-weight:800}.small{font-size:11px;color:var(--muted)}.nav{margin-top:24px;display:grid;gap:5px}.nav button{background:transparent;color:var(--muted);border:0;text-align:left;padding:10px;border-radius:9px;cursor:pointer}.nav button.active,.nav button:hover{background:var(--panel2);color:var(--txt)}
 main{padding:22px;max-width:1600px;width:100%;margin:auto}.toolbar{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}.toolbar input{flex:1;min-width:280px;background:var(--panel);border:1px solid var(--line);border-radius:10px;color:var(--txt);padding:11px 12px}.btn{background:var(--panel2);border:1px solid var(--line);color:var(--txt);padding:10px 12px;border-radius:10px;cursor:pointer}.btn.primary{background:#1b5fbd;border-color:#3384ef}.btn.good{background:#123b30;border-color:#226a55}.hero{background:linear-gradient(135deg,#12203a,#0f1728);border:1px solid var(--line);border-radius:16px;padding:18px;margin-bottom:14px;display:flex;justify-content:space-between;gap:20px}.hero h1{margin:0 0 5px;font-size:29px}.chips{display:flex;gap:7px;flex-wrap:wrap;margin-top:10px}.chip{font-size:11px;border:1px solid var(--line);border-radius:99px;padding:5px 8px;color:#c8d5ef}.chip.green{color:#b8ffde;border-color:#28634f}.grid{display:grid;gap:13px}.c4{grid-template-columns:repeat(4,minmax(0,1fr))}.c3{grid-template-columns:repeat(3,minmax(0,1fr))}.c2{grid-template-columns:repeat(2,minmax(0,1fr))}.card{background:rgba(17,26,46,.92);border:1px solid var(--line);border-radius:15px;padding:15px}.card h3{font-size:14px;margin:0 0 9px}.k{font-size:26px;font-weight:800}.label{font-size:11px;color:var(--muted)}.note{font-size:11px;color:var(--muted);margin-top:5px}.section{margin:16px 0}.section h2{font-size:18px;margin:0 0 9px}.tablewrap{overflow:auto;border:1px solid var(--line);border-radius:11px}.table{width:100%;border-collapse:collapse;min-width:900px}.table th,.table td{padding:9px 10px;text-align:left;border-bottom:1px solid var(--line);vertical-align:top;font-size:12px}.table th{background:#0f172a;color:#bac8df}.table tr:last-child td{border-bottom:0}.tag{font-size:10px;border-radius:99px;padding:4px 7px;border:1px solid var(--line);white-space:nowrap}.tag.a{color:#b7ffe0;border-color:#28634f;background:#0d2d25}.tag.b{color:#ffe59a;border-color:#6a5623;background:#302815}.tag.c{color:#ffabb5;border-color:#71303c;background:#35171f}.source{font-size:10px;color:#a7c3e9}.source-dot{display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--blue);margin-right:5px}.empty{padding:25px;text-align:center;color:var(--muted);border:1px dashed var(--line);border-radius:11px}.mono{font:11px ui-monospace,SFMono-Regular,Consolas,monospace}.bar{height:8px;border-radius:99px;background:#202b43;overflow:hidden}.bar i{display:block;height:100%;background:linear-gradient(90deg,#5d9cff,#58d5ac)}textarea{width:100%;min-height:100px;background:#0c1323;border:1px solid var(--line);border-radius:9px;color:var(--txt);padding:10px}.hide{display:none!important}.trace{cursor:pointer}.trace:hover{background:#17213a}.signal{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.signal>div{padding:11px;background:#0e1729;border:1px solid var(--line);border-radius:11px}.signal b{font-size:16px}.legend{font-size:11px;color:var(--muted);line-height:1.5}.footer{color:var(--muted);font-size:10px;margin-top:18px;border-top:1px solid var(--line);padding-top:12px}
+.chartgrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:13px}.chartcard{min-height:300px}.chart{width:100%;height:250px;display:block}.chart .gridline{stroke:#26334d;stroke-width:1}.chart .axis{stroke:#50617d;stroke-width:1}.chart text{fill:#9fb0ca;font-size:10px}.chart .chartBar{fill:#4b8ee8}.chart .chartBar2{fill:#53b982}.chart .line1{fill:none;stroke:#71a7ff;stroke-width:2.5}.chart .line2{fill:none;stroke:#55d3a2;stroke-width:2.5}.chart .line3{fill:none;stroke:#f0bd58;stroke-width:2.5}.chart .dot1{fill:#71a7ff}.chart .dot2{fill:#55d3a2}.chart .dot3{fill:#f0bd58}.chart-legend{display:flex;gap:14px;flex-wrap:wrap;font-size:11px;color:var(--muted);margin-top:2px}.legend-dot{width:8px;height:8px;border-radius:50%;display:inline-block;margin-right:5px}.quarter-table{margin-top:4px}.metric-good{color:#9debc9}.metric-warn{color:#ffd989}.subtle{color:var(--muted)}
+@media(max-width:900px){.chartgrid{grid-template-columns:1fr}}
+
 @media(max-width:1000px){.layout{grid-template-columns:1fr}.side{border-right:0;border-bottom:1px solid var(--line)}.nav{display:flex;overflow:auto}.c4{grid-template-columns:repeat(2,1fr)}}@media(max-width:650px){main{padding:12px}.hero,.c2,.c3,.c4,.signal{grid-template-columns:1fr;display:grid}}
 </style>
 </head>
@@ -79,6 +82,15 @@ main{padding:22px;max-width:1600px;width:100%;margin:auto}.toolbar{display:flex;
       <div><span class="label">5. Ratios</span><br><b id="s5">—</b></div>
       <div><span class="label">6. Historique</span><br><b id="s6">—</b></div>
     </div></div>
+    <div class="section">
+      <div class="chartgrid">
+        <div class="card chartcard"><h3>Chiffre d’affaires trimestriel</h3><div id="quarterRevenueChart"></div><div class="chart-legend"><span><i class="legend-dot" style="background:#4b8ee8"></i>Revenue</span><span class="subtle">Source : SEC/XBRL · périodes fiscales</span></div></div>
+        <div class="card chartcard"><h3>Évolution des marges</h3><div id="marginChart"></div><div class="chart-legend"><span><i class="legend-dot" style="background:#71a7ff"></i>Marge brute</span><span><i class="legend-dot" style="background:#55d3a2"></i>Marge opérationnelle</span><span><i class="legend-dot" style="background:#f0bd58"></i>Marge FCF</span></div></div>
+        <div class="card chartcard"><h3>Bénéfice net et FCF</h3><div id="profitCashChart"></div><div class="chart-legend"><span><i class="legend-dot" style="background:#4b8ee8"></i>Bénéfice net</span><span><i class="legend-dot" style="background:#53b982"></i>FCF</span></div></div>
+        <div class="card chartcard"><h3>Qualité de croissance</h3><div id="growthChart"></div><div class="chart-legend"><span><i class="legend-dot" style="background:#71a7ff"></i>Revenue YoY</span><span><i class="legend-dot" style="background:#55d3a2"></i>Marge FCF</span></div></div>
+      </div>
+    </div>
+    <div class="section card"><h3>Derniers trimestres</h3><div id="quarterlyTable" class="quarter-table"></div></div>
   </section>
 
   <section id="tab-filings" class="tab hide">
@@ -193,7 +205,7 @@ function render(){
  document.getElementById("heroROIC").textContent=fmt(r.roic?.value,"pct");
  let q=state.quality?.score||0;document.getElementById("quality").textContent=q+"%";document.getElementById("qualityBar").style.width=q+"%";document.getElementById("qualityNote").textContent=`${state.audit?.length||0} éléments traçables · ${state.facts?.length||0} facts XBRL`;
  ["s1","s2","s3","s4","s5","s6"].forEach((id,i)=>document.getElementById(id).textContent=[c.cik?"OK":"—",state.filings.length?"OK":"—",state.facts.length?"OK":"—",Object.keys(m).length?"OK":"—",Object.keys(r).length?"OK":"—",state.history.length?"OK":"—"][i]);
- renderFilings();renderFacts();renderMetrics();renderRatios();renderHistory();renderSignals();renderScore();renderAudit();
+ renderFilings();renderFacts();renderMetrics();renderRatios();renderHistory();renderSignals();renderScore();renderAudit();renderOverviewCharts();
 }
 function renderFilings(){
  const rows=(state.filings||[]).map(f=>`<tr><td>${esc(f.filing_date)}</td><td>${esc(f.form)}</td><td>${esc(f.period)}</td><td>${renderSource(f)}</td><td class="mono">${esc(f.accession||"")}</td><td>${esc(f.primary_document||"")}</td></tr>`);
@@ -215,6 +227,34 @@ function renderRatios(){
 }
 function renderHistory(){
  const h=state.history||[];document.getElementById("history").innerHTML=h.length?renderTable(["Année","Revenue","Operating income","Net income","CFO","Capex","FCF","Source"],h.map(x=>`<tr><td>${x.year}</td><td>${fmt(x.revenue,"money")}</td><td>${fmt(x.operating_income,"money")}</td><td>${fmt(x.net_income,"money")}</td><td>${fmt(x.cfo,"money")}</td><td>${fmt(x.capex,"money")}</td><td>${fmt(x.fcf,"money")}</td><td>${renderSource(x.source||{})}</td></tr>`)): '<div class="empty">Historique non disponible.</div>';
+}
+
+function qLabel(z){return `${z.quarter} ${String(z.fy||"").replace(".0","")}`;}
+function qData(){return [...(state.quarterly||[])].sort((a,b)=>String(a.period_end).localeCompare(String(b.period_end))).slice(-12);}
+function chartSvg(data, series, opts={}){
+  const W=760,H=250,p={l:48,r:16,t:16,b:34},iw=W-p.l-p.r,ih=H-p.t-p.b;
+  const vals=series.flatMap(s=>data.map(d=>d[s.key]).filter(v=>typeof v==='number'&&Number.isFinite(v)));
+  if(!vals.length)return '<div class="empty">Données trimestrielles insuffisantes.</div>';
+  let min=opts.min!=null?opts.min:Math.min(0,...vals), max=opts.max!=null?opts.max:Math.max(...vals);
+  if(max===min){max+=1;min-=1;} const pad=(max-min)*.08; if(opts.min==null)min=Math.min(0,min-pad); if(opts.max==null)max=max+pad;
+  const x=i=>p.l+(data.length===1?iw/2:i*iw/(data.length-1)); const y=v=>p.t+(max-v)/(max-min)*ih;
+  let svg=`<svg class="chart" viewBox="0 0 ${W} ${H}" preserveAspectRatio="none">`;
+  for(let i=0;i<=4;i++){const v=min+(max-min)*i/4,yy=y(v);svg+=`<line class="gridline" x1="${p.l}" x2="${W-p.r}" y1="${yy}" y2="${yy}"/><text x="${p.l-7}" y="${yy+3}" text-anchor="end">${opts.pct?Math.round(v*100)+"%":fmt(v,"money")}</text>`;}
+  svg+=`<line class="axis" x1="${p.l}" x2="${W-p.r}" y1="${H-p.b}" y2="${H-p.b}"/>`;
+  if(opts.bars){const bw=Math.max(8,Math.min(30,iw/data.length*.55)); data.forEach((d,i)=>{const v=d[series[0].key];if(typeof v!=='number')return;const yy=y(Math.max(0,v)), y0=y(Math.max(0,min));let h=Math.abs(y0-yy);svg+=`<rect class="${series[0].cls||'bar'}" x="${x(i)-bw/2}" y="${Math.min(yy,y0)}" width="${bw}" height="${Math.max(1,h)}" rx="3"><title>${qLabel(d)} · ${series[0].label}: ${fmt(v,opts.money?'money':opts.pct?'pct':'number')}</title></rect>`;});}
+  else if(opts.doubleBars){const bw=Math.max(5,Math.min(18,iw/data.length*.18));data.forEach((d,i)=>[0,1].forEach(j=>{const key=series[j].key,v=d[key];if(typeof v!=='number')return;const yy=y(Math.max(0,v)),y0=y(Math.max(0,min)),h=Math.abs(y0-yy);svg+=`<rect class="${series[j].cls}" x="${x(i)+(j-.5)*(bw+3)}" y="${Math.min(yy,y0)}" width="${bw}" height="${Math.max(1,h)}" rx="2"><title>${qLabel(d)} · ${series[j].label}: ${fmt(v,'money')}</title></rect>`;}));}
+  series.forEach((s,si)=>{let pts=data.map((d,i)=>typeof d[s.key]==='number'?`${x(i)},${y(d[s.key])}`:null);let groups=[];let cur=[];pts.forEach(pt=>{if(pt)cur.push(pt);else if(cur.length){groups.push(cur);cur=[];}});if(cur.length)groups.push(cur);groups.forEach(g=>{if(g.length>1)svg+=`<polyline class="${s.cls}" points="${g.join(' ')}"/>`;g.forEach(pt=>{const [cx,cy]=pt.split(',');svg+=`<circle class="${s.dot}" cx="${cx}" cy="${cy}" r="3"><title>${esc(s.label)}</title></circle>`;});});});
+  data.forEach((d,i)=>{if(i%2===0||data.length<=7)svg+=`<text x="${x(i)}" y="${H-9}" text-anchor="middle">${esc(qLabel(d))}</text>`;});
+  svg+='</svg>';return svg;
+}
+function renderOverviewCharts(){
+ const d=qData();
+ document.getElementById('quarterRevenueChart').innerHTML=chartSvg(d,[{key:'revenue',label:'Revenue',cls:'chartBar'}],{bars:true,money:true});
+ document.getElementById('marginChart').innerHTML=chartSvg(d,[{key:'gross_margin',label:'Marge brute',cls:'line1',dot:'dot1'},{key:'operating_margin',label:'Marge opérationnelle',cls:'line2',dot:'dot2'},{key:'fcf_margin',label:'Marge FCF',cls:'line3',dot:'dot3'}],{pct:true,min:0});
+ document.getElementById('profitCashChart').innerHTML=chartSvg(d,[{key:'net_income',label:'Bénéfice net',cls:'chartBar',dot:'dot1'},{key:'fcf',label:'FCF',cls:'chartBar2',dot:'dot2'}],{doubleBars:true,money:true});
+ document.getElementById('growthChart').innerHTML=chartSvg(d,[{key:'revenue_yoy',label:'Revenue YoY',cls:'line1',dot:'dot1'},{key:'fcf_margin',label:'Marge FCF',cls:'line2',dot:'dot2'}],{pct:true,min:0});
+ const rows=d.slice().reverse().map(x=>`<tr><td><b>${esc(qLabel(x))}</b><div class="small">${esc(x.period_end||'')}</div></td><td>${fmt(x.revenue,'money')}</td><td class="${x.revenue_yoy!=null&&x.revenue_yoy>=0?'metric-good':'metric-warn'}">${fmt(x.revenue_yoy,'pct')}</td><td>${fmt(x.gross_margin,'pct')}</td><td>${fmt(x.operating_margin,'pct')}</td><td>${fmt(x.net_margin,'pct')}</td><td>${fmt(x.fcf,'money')}</td><td>${fmt(x.fcf_margin,'pct')}</td></tr>`);
+ document.getElementById('quarterlyTable').innerHTML=d.length?renderTable(['Trimestre','Revenue','YoY','Marge brute','Marge op.','Marge nette','FCF','Marge FCF'],rows):'<div class="empty">Pas assez de données trimestrielles.</div>';
 }
 function renderSignals(){
  const s=state.signals||{}; [["sigGrowth","growth"],["sigMargin","margin"],["sigCash","cash"],["sigBalance","balance"],["sigCapital","capital"],["sigEvidence","evidence"]].forEach(([id,k])=>document.getElementById(id).innerHTML=`<b>${esc(s[k]?.label||"—")}</b><div class="note">${esc(s[k]?.reason||"")}</div>`);
