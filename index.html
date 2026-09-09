@@ -1,0 +1,540 @@
+
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Equity Intelligence — Engine v2</title>
+<style>
+:root{--bg:#08101f;--panel:#111a2e;--panel2:#18233a;--line:#2a3854;--txt:#edf3ff;--muted:#98a7c2;--blue:#70a9ff;--green:#52d39d;--red:#ff7180;--amber:#f5c75b}
+*{box-sizing:border-box}body{margin:0;background:linear-gradient(180deg,#070c17,#0c1426);color:var(--txt);font:14px Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial}
+a{color:#a8caff}.layout{display:grid;grid-template-columns:250px 1fr;min-height:100vh}.side{padding:22px 16px;border-right:1px solid var(--line);background:#09101d}.brand{font-size:18px;font-weight:800}.small{font-size:11px;color:var(--muted)}.nav{margin-top:24px;display:grid;gap:5px}.nav button{background:transparent;color:var(--muted);border:0;text-align:left;padding:10px;border-radius:9px;cursor:pointer}.nav button.active,.nav button:hover{background:var(--panel2);color:var(--txt)}
+main{padding:22px;max-width:1600px;width:100%;margin:auto}.toolbar{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}.toolbar input{flex:1;min-width:280px;background:var(--panel);border:1px solid var(--line);border-radius:10px;color:var(--txt);padding:11px 12px}.btn{background:var(--panel2);border:1px solid var(--line);color:var(--txt);padding:10px 12px;border-radius:10px;cursor:pointer}.btn.primary{background:#1b5fbd;border-color:#3384ef}.btn.good{background:#123b30;border-color:#226a55}.hero{background:linear-gradient(135deg,#12203a,#0f1728);border:1px solid var(--line);border-radius:16px;padding:18px;margin-bottom:14px;display:flex;justify-content:space-between;gap:20px}.hero h1{margin:0 0 5px;font-size:29px}.chips{display:flex;gap:7px;flex-wrap:wrap;margin-top:10px}.chip{font-size:11px;border:1px solid var(--line);border-radius:99px;padding:5px 8px;color:#c8d5ef}.chip.green{color:#b8ffde;border-color:#28634f}.grid{display:grid;gap:13px}.c4{grid-template-columns:repeat(4,minmax(0,1fr))}.c3{grid-template-columns:repeat(3,minmax(0,1fr))}.c2{grid-template-columns:repeat(2,minmax(0,1fr))}.card{background:rgba(17,26,46,.92);border:1px solid var(--line);border-radius:15px;padding:15px}.card h3{font-size:14px;margin:0 0 9px}.k{font-size:26px;font-weight:800}.label{font-size:11px;color:var(--muted)}.note{font-size:11px;color:var(--muted);margin-top:5px}.section{margin:16px 0}.section h2{font-size:18px;margin:0 0 9px}.tablewrap{overflow:auto;border:1px solid var(--line);border-radius:11px}.table{width:100%;border-collapse:collapse;min-width:900px}.table th,.table td{padding:9px 10px;text-align:left;border-bottom:1px solid var(--line);vertical-align:top;font-size:12px}.table th{background:#0f172a;color:#bac8df}.table tr:last-child td{border-bottom:0}.tag{font-size:10px;border-radius:99px;padding:4px 7px;border:1px solid var(--line);white-space:nowrap}.tag.a{color:#b7ffe0;border-color:#28634f;background:#0d2d25}.tag.b{color:#ffe59a;border-color:#6a5623;background:#302815}.tag.c{color:#ffabb5;border-color:#71303c;background:#35171f}.source{font-size:10px;color:#a7c3e9}.source-dot{display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--blue);margin-right:5px}.empty{padding:25px;text-align:center;color:var(--muted);border:1px dashed var(--line);border-radius:11px}.mono{font:11px ui-monospace,SFMono-Regular,Consolas,monospace}.bar{height:8px;border-radius:99px;background:#202b43;overflow:hidden}.bar i{display:block;height:100%;background:linear-gradient(90deg,#5d9cff,#58d5ac)}textarea{width:100%;min-height:100px;background:#0c1323;border:1px solid var(--line);border-radius:9px;color:var(--txt);padding:10px}.hide{display:none!important}.trace{cursor:pointer}.trace:hover{background:#17213a}.signal{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.signal>div{padding:11px;background:#0e1729;border:1px solid var(--line);border-radius:11px}.signal b{font-size:16px}.legend{font-size:11px;color:var(--muted);line-height:1.5}.footer{color:var(--muted);font-size:10px;margin-top:18px;border-top:1px solid var(--line);padding-top:12px}
+@media(max-width:1000px){.layout{grid-template-columns:1fr}.side{border-right:0;border-bottom:1px solid var(--line)}.nav{display:flex;overflow:auto}.c4{grid-template-columns:repeat(2,1fr)}}@media(max-width:650px){main{padding:12px}.hero,.c2,.c3,.c4,.signal{grid-template-columns:1fr;display:grid}}
+</style>
+</head>
+<body>
+<div class="layout">
+<aside class="side">
+  <div class="brand">Equity Intelligence v2</div>
+  <div class="small">Evidence → Metrics → Decision</div>
+  <div class="nav">
+    <button class="active" data-tab="overview">1 · Synthèse</button>
+    <button data-tab="filings">2 · Filings</button>
+    <button data-tab="facts">3 · XBRL / Facts</button>
+    <button data-tab="metrics">4 · KPI normalisés</button>
+    <button data-tab="ratios">5 · Ratios</button>
+    <button data-tab="history">6 · Historique</button>
+    <button data-tab="ecosystem">7 · Écosystème</button>
+    <button data-tab="signals">8 · Signaux</button>
+    <button data-tab="scenarios">9 · Scénarios</button>
+    <button data-tab="score">10 · Score final</button>
+    <button data-tab="audit">11 · Traçabilité</button>
+  </div>
+  <div style="margin-top:26px" class="legend">
+    <b>Règle :</b> un chiffre financier n'entre dans le modèle que s'il possède un identifiant de source, une période, une unité, une définition et le lien vers le document primaire quand celui-ci est disponible.
+  </div>
+</aside>
+
+<main>
+  <div class="toolbar">
+    <input id="ticker" placeholder="Ticker US : MSFT, NVDA, ADBE, MA…">
+    <button class="btn primary" onclick="loadCompany()">Analyser</button>
+    <button class="btn good" onclick="connectBackend()">Tester backend</button>
+    <button class="btn" onclick="exportPackage()">Exporter analyse JSON</button>
+    <button class="btn" onclick="openKoyfin()">Koyfin</button>
+  </div>
+
+  <div class="hero">
+    <div>
+      <div class="chips"><span class="chip green">SOURCE-FIRST</span><span class="chip" id="engineStatus">Backend non connecté</span></div>
+      <h1 id="company">Aucune société</h1>
+      <div id="identity" class="small">Le ticker est la clé d'entrée. L'identité est résolue ensuite par le registre réglementaire.</div>
+      <div id="chips" class="chips"></div>
+    </div>
+    <div style="min-width:230px">
+      <div class="small">Data quality / provenance</div>
+      <div id="quality" class="k">—</div>
+      <div class="bar"><i id="qualityBar" style="width:0%"></i></div>
+      <div class="small" id="qualityNote" style="margin-top:6px">Pas de données</div>
+    </div>
+  </div>
+
+  <section id="tab-overview" class="tab">
+    <div class="grid c4">
+      <div class="card"><div class="label">Connexion SEC</div><div class="k" id="secUAStatus">Configuré</div><div class="note">User-Agent: Equity Intelligence (guets2000@hotmail.com)</div></div><div class="card"><div class="label">Revenue LTM</div><div id="heroRevenue" class="k">—</div><div class="note">SEC/XBRL si disponible</div></div>
+      <div class="card"><div class="label">Operating margin</div><div id="heroOM" class="k">—</div><div class="note">Operating income / revenue</div></div>
+      <div class="card"><div class="label">FCF margin</div><div id="heroFCF" class="k">—</div><div class="note">CFO − Capex / revenue</div></div>
+      <div class="card"><div class="label">ROIC</div><div id="heroROIC" class="k">—</div><div class="note">Méthode paramétrable</div></div>
+    </div>
+    <div class="section grid c2">
+      <div class="card"><h3>Thèse</h3><textarea id="thesis" placeholder="Ce que le marché sous-estime, pourquoi l'avantage est durable, moteurs de croissance, réinvestissement…"></textarea></div>
+      <div class="card"><h3>Falsificateurs</h3><textarea id="falsifiers" placeholder="Quels indicateurs, s'ils se détériorent, invalident la thèse ?"></textarea></div>
+    </div>
+    <div class="section card"><h3>Pipeline exécuté</h3><div class="signal">
+      <div><span class="label">1. Identification</span><br><b id="s1">—</b></div>
+      <div><span class="label">2. Filings</span><br><b id="s2">—</b></div>
+      <div><span class="label">3. XBRL</span><br><b id="s3">—</b></div>
+      <div><span class="label">4. Normalisation</span><br><b id="s4">—</b></div>
+      <div><span class="label">5. Ratios</span><br><b id="s5">—</b></div>
+      <div><span class="label">6. Historique</span><br><b id="s6">—</b></div>
+    </div></div>
+  </section>
+
+  <section id="tab-filings" class="tab hide">
+    <div class="section card"><h2>Filings primaires</h2><div id="filings"></div></div>
+  </section>
+
+  <section id="tab-facts" class="tab hide">
+    <div class="section card"><h2>Faits XBRL bruts</h2><p class="small">Clique sur une ligne pour ouvrir son passeport de provenance.</p><div id="facts"></div></div>
+  </section>
+
+  <section id="tab-metrics" class="tab hide">
+    <div class="section card"><h2>KPI normalisés</h2><div id="metrics"></div></div>
+  </section>
+
+  <section id="tab-ratios" class="tab hide">
+    <div class="section grid c3">
+      <div class="card"><h3>Rentabilité</h3><div id="profitRatios"></div></div>
+      <div class="card"><h3>Cash conversion</h3><div id="cashRatios"></div></div>
+      <div class="card"><h3>Structure</h3><div id="balanceRatios"></div></div>
+    </div>
+    <div class="section card"><h3>Valorisation — source marché requise</h3><div id="valuation" class="noteBox">P/E NTM, P/FCF, P/OCF et EV/EBITDA ne sont pas fabriqués à partir des filings : ils nécessitent prix/capitalisation et, pour NTM, des estimations identifiées. Le bouton Koyfin ouvre l'interface externe.</div></div>
+  </section>
+
+  <section id="tab-history" class="tab hide">
+    <div class="section card"><h2>Historique 5–10 ans</h2><div id="history"></div></div>
+  </section>
+
+  <section id="tab-ecosystem" class="tab hide">
+    <div class="section grid c3">
+      <div class="card"><h3>Clients</h3><textarea id="clients" placeholder="Sources à documenter : 10-K/20-F, earnings calls, concentration client, géographies…"></textarea></div>
+      <div class="card"><h3>Fournisseurs</h3><textarea id="suppliers" placeholder="Dépendances, concentration, capacité, alternatives, coûts critiques…"></textarea></div>
+      <div class="card"><h3>Concurrents</h3><textarea id="competitors" placeholder="3–7 concurrents + substituts. Parts de marché : source explicite uniquement."></textarea></div>
+    </div>
+  </section>
+
+  <section id="tab-signals" class="tab hide">
+    <div class="section grid c3">
+      <div class="card"><h3>Croissance</h3><div id="sigGrowth">—</div></div>
+      <div class="card"><h3>Marges</h3><div id="sigMargin">—</div></div>
+      <div class="card"><h3>Cash-flow</h3><div id="sigCash">—</div></div>
+      <div class="card"><h3>Bilan</h3><div id="sigBalance">—</div></div>
+      <div class="card"><h3>Dilution / capital</h3><div id="sigCapital">—</div></div>
+      <div class="card"><h3>Qualité de preuve</h3><div id="sigEvidence">—</div></div>
+    </div>
+  </section>
+
+  <section id="tab-scenarios" class="tab hide">
+    <div class="section grid c3">
+      <div class="card"><h3>Bear</h3><textarea id="bear" placeholder="Croissance, marge, FCF, multiple."></textarea></div>
+      <div class="card"><h3>Base</h3><textarea id="base" placeholder="Hypothèses centrales, scénario le plus probable."></textarea></div>
+      <div class="card"><h3>Bull</h3><textarea id="bull" placeholder="Amélioration plausible, pas scénario magique."></textarea></div>
+    </div>
+    <div class="section card"><h3>Moteur de scénario</h3>
+      <div class="grid c4">
+        <div><div class="label">CA terminal</div><input id="scRevenue" class="inp" placeholder="ex. 100000"></div>
+        <div><div class="label">FCF margin</div><input id="scMargin" class="inp" placeholder="ex. 25%"></div>
+        <div><div class="label">Multiple P/FCF</div><input id="scMult" class="inp" placeholder="ex. 25"></div>
+        <div><div class="label">Actions diluées</div><input id="scShares" class="inp" placeholder="ex. 1000"></div>
+      </div>
+      <button class="btn primary" onclick="calcScenario()">Calculer valeur implicite</button>
+      <div id="scenarioResult" class="note" style="margin-top:10px"></div>
+    </div>
+  </section>
+
+  <section id="tab-score" class="tab hide">
+    <div class="section card"><h2>Score final</h2><p class="small">Le score agrège des dimensions explicitement séparées. Il ne remplace pas le jugement d'investissement.</p>
+      <div class="grid c2" id="scoreGrid"></div>
+    </div>
+    <div class="section card"><h3>Décision</h3><textarea id="decision" placeholder="Pourquoi acheter / conserver / surveiller / éviter ?"></textarea></div>
+  </section>
+
+  <section id="tab-audit" class="tab hide">
+    <div class="section card"><h2>Passeport de chaque chiffre</h2><div id="audit"></div></div>
+  </section>
+
+  <div class="footer">
+    Le frontend ne contourne aucun droit d'accès ni licence. Le backend fourni séparément interroge l'API publique SEC côté serveur, car data.sec.gov ne supporte pas CORS. Pour l'Europe, le pipeline doit intégrer le rapport annuel ESEF/iXBRL de l'émetteur ou sa source réglementaire/IR. Chaque valeur conserve : <span class="mono">sourceId, issuer, filing, accession, taxonomy, tag, period, unit, value, fact_url, retrieved_at, method</span>.
+  </div>
+</main>
+</div>
+
+<script>
+let API=window.location.origin;
+let state={company:null,filings:[],facts:[],metrics:{},ratios:{},history:[],audit:[],signals:{}};
+
+document.querySelectorAll(".nav button").forEach(b=>b.onclick=()=>{document.querySelectorAll(".nav button").forEach(x=>x.classList.toggle("active",x===b));document.querySelectorAll(".tab").forEach(x=>x.classList.add("hide"));document.getElementById("tab-"+b.dataset.tab).classList.remove("hide")});
+
+function esc(v){return String(v??"").replace(/[&<>"]/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[m]));}
+function fmt(v,kind="number"){if(v==null||v==="")return "—"; if(kind==="pct")return (v*100).toFixed(1)+"%"; if(kind==="money")return new Intl.NumberFormat("fr-FR",{notation:"compact",maximumFractionDigits:2}).format(v); return new Intl.NumberFormat("fr-FR",{maximumFractionDigits:2}).format(v);}
+function status(v){return v?'<span class="tag a">Vérifié</span>':'<span class="tag b">À vérifier</span>';}
+function renderSource(a){return `<span class="source"><span class="source-dot"></span>${esc(a.source_name||a.sourceId||"Source primaire")}${a.filing_url?` · <a target="_blank" href="${esc(a.filing_url)}">document</a>`:""}</span>`}
+function renderTable(headers,rows){return `<div class="tablewrap"><table class="table"><thead><tr>${headers.map(h=>`<th>${esc(h)}</th>`).join("")}</tr></thead><tbody>${rows.join("")}</tbody></table></div>`}
+async function connectBackend(){try{let r=await fetch(API+"/health");let j=await r.json();document.getElementById("engineStatus").textContent=j.ok?"Backend SEC connecté":"Backend indisponible";alert(j.ok?"Backend connecté.":"Backend indisponible.");}catch(e){document.getElementById("engineStatus").textContent="Backend indisponible";showSetupHelp(e);}}
+async function loadCompany(){
+  const t=document.getElementById("ticker").value.trim().toUpperCase(); if(!t)return;
+  document.getElementById("engineStatus").textContent="Extraction en cours…";
+  try{
+    const r=await fetch(`${API}/api/company?symbol=${encodeURIComponent(t)}`); if(!r.ok)throw new Error(await r.text());
+    state=await r.json(); render();
+    document.getElementById("engineStatus").textContent="Données SEC chargées";
+    localStorage.setItem("equity-engine-v2-"+t,JSON.stringify(state));
+  }catch(e){document.getElementById("engineStatus").textContent="Erreur";showSetupHelp(e);}
+}
+function render(){
+ const c=state.company||{};document.getElementById("company").textContent=c.name||"Société";
+ document.getElementById("identity").textContent=`${c.ticker||""} · CIK ${c.cik||"—"} · échange : ${c.exchange||"—"} · juridiction : ${c.jurisdiction||"—"}`;
+ document.getElementById("chips").innerHTML=`<span class="chip">${esc(c.form_family||"US SEC")}</span><span class="chip">${esc(c.taxonomy||"XBRL")}</span><span class="chip">${esc(c.currency||"—")}</span>`;
+ const m=state.metrics||{},r=state.ratios||{};
+ document.getElementById("heroRevenue").textContent=fmt(m.revenue_ltm?.value,"money");
+ document.getElementById("heroOM").textContent=fmt(r.operating_margin?.value,"pct");
+ document.getElementById("heroFCF").textContent=fmt(r.fcf_margin?.value,"pct");
+ document.getElementById("heroROIC").textContent=fmt(r.roic?.value,"pct");
+ let q=state.quality?.score||0;document.getElementById("quality").textContent=q+"%";document.getElementById("qualityBar").style.width=q+"%";document.getElementById("qualityNote").textContent=`${state.audit?.length||0} éléments traçables · ${state.facts?.length||0} facts XBRL`;
+ ["s1","s2","s3","s4","s5","s6"].forEach((id,i)=>document.getElementById(id).textContent=[c.cik?"OK":"—",state.filings.length?"OK":"—",state.facts.length?"OK":"—",Object.keys(m).length?"OK":"—",Object.keys(r).length?"OK":"—",state.history.length?"OK":"—"][i]);
+ renderFilings();renderFacts();renderMetrics();renderRatios();renderHistory();renderSignals();renderScore();renderAudit();
+}
+function renderFilings(){
+ const rows=(state.filings||[]).map(f=>`<tr><td>${esc(f.filing_date)}</td><td>${esc(f.form)}</td><td>${esc(f.period)}</td><td>${renderSource(f)}</td><td class="mono">${esc(f.accession||"")}</td><td>${esc(f.primary_document||"")}</td></tr>`);
+ document.getElementById("filings").innerHTML=rows.length?renderTable(["Date","Form","Période","Source","Accession","Document"],rows):'<div class="empty">Aucun filing trouvé.</div>';
+}
+function renderFacts(){
+ const rows=(state.facts||[]).slice(0,120).map(f=>`<tr class="trace" onclick='showTrace(${JSON.stringify(f).replace(/'/g,"&#39;")})'><td>${esc(f.canonical_metric||f.tag)}</td><td>${esc(f.tag)}</td><td>${fmt(f.value)}</td><td>${esc(f.unit)}</td><td>${esc(f.period_end)}</td><td>${esc(f.form)}</td><td>${renderSource(f)}</td></tr>`);
+ document.getElementById("facts").innerHTML=rows.length?renderTable(["Metric","XBRL tag","Value","Unit","End","Form","Source"],rows):'<div class="empty">Aucun fact standardisé.</div>';
+}
+function renderMetrics(){
+ const rows=Object.entries(state.metrics||{}).map(([k,v])=>`<tr class="trace" onclick='showTrace(${JSON.stringify(v).replace(/'/g,"&#39;")})'><td><b>${esc(k)}</b></td><td>${fmt(v.value,v.kind)}</td><td>${esc(v.period||"LTM")}</td><td>${esc(v.method||"")}</td><td>${renderSource(v)}</td></tr>`);
+ document.getElementById("metrics").innerHTML=rows.length?renderTable(["KPI","Valeur","Période","Méthode","Provenance"],rows):'<div class="empty">Aucun KPI.</div>';
+}
+function renderRatios(){
+ const groups=[["profitRatios",["operating_margin","gross_margin","roe","roic"]],["cashRatios",["fcf_margin","cfo_margin"]],["balanceRatios",["net_debt_to_fcf","debt_to_assets"]]];
+ groups.forEach(([id,ks])=>{document.getElementById(id).innerHTML=ks.map(k=>{let v=state.ratios?.[k];return `<div style="padding:8px 0;border-bottom:1px solid var(--line)"><div class="label">${esc(k)}</div><b>${v?fmt(v.value,"pct"):"—"}</b>${v?`<div class="note">${esc(v.method||"")}</div>`:""}</div>`}).join("")});
+ const vals=["pe_ntm","p_fcf","p_ocf","ev_ebitda"].map(k=>{let v=state.ratios?.[k];return `<div class="card"><div class="label">${esc(k)}</div><div class="k">${v?fmt(v.value):"—"}</div><div class="note">${v?esc(v.source_name||"Source marché"):"Source marché à connecter"}</div></div>`}).join("");
+ document.getElementById("valuation").innerHTML=`<div class="grid c4">${vals}</div><p class="small">Les multiples de marché ne sont calculés que lorsqu'une source de marché explicitement identifiée est disponible.</p>`;
+}
+function renderHistory(){
+ const h=state.history||[];document.getElementById("history").innerHTML=h.length?renderTable(["Année","Revenue","Operating income","Net income","CFO","Capex","FCF","Source"],h.map(x=>`<tr><td>${x.year}</td><td>${fmt(x.revenue,"money")}</td><td>${fmt(x.operating_income,"money")}</td><td>${fmt(x.net_income,"money")}</td><td>${fmt(x.cfo,"money")}</td><td>${fmt(x.capex,"money")}</td><td>${fmt(x.fcf,"money")}</td><td>${renderSource(x.source||{})}</td></tr>`)): '<div class="empty">Historique non disponible.</div>';
+}
+function renderSignals(){
+ const s=state.signals||{}; [["sigGrowth","growth"],["sigMargin","margin"],["sigCash","cash"],["sigBalance","balance"],["sigCapital","capital"],["sigEvidence","evidence"]].forEach(([id,k])=>document.getElementById(id).innerHTML=`<b>${esc(s[k]?.label||"—")}</b><div class="note">${esc(s[k]?.reason||"")}</div>`);
+}
+function renderScore(){
+ const s=state.score||{}, rows=Object.entries(s.components||{}).map(([k,v])=>`<div class="card"><div class="label">${esc(k)}</div><div class="k">${v.score}/100</div><div class="note">${esc(v.reason||"")}</div></div>`);
+ document.getElementById("scoreGrid").innerHTML=rows.join("")+`<div class="card" style="grid-column:1/-1"><div class="label">SCORE FINAL</div><div class="k">${s.total??"—"}/100</div><div class="note">${esc(s.interpretation||"")}</div></div>`;
+}
+function renderAudit(){
+ const rows=(state.audit||[]).map(a=>`<tr class="trace" onclick='showTrace(${JSON.stringify(a).replace(/'/g,"&#39;")})'><td>${esc(a.id)}</td><td>${esc(a.metric||a.kpi||"")}</td><td>${esc(a.value??"")}</td><td>${esc(a.formula||a.method||"")}</td><td>${esc(a.source_name||"")}</td><td>${esc(a.filing_url||"")}</td><td>${esc(a.retrieved_at||"")}</td></tr>`);
+ document.getElementById("audit").innerHTML=rows.length?renderTable(["ID","Objet","Valeur","Calcul","Source","URL","Extraction"],rows):'<div class="empty">Aucun passeport de provenance.</div>';
+}
+function showTrace(obj){
+ const txt=JSON.stringify(obj,null,2);let w=window.open("","trace","width=800,height=700");w.document.write(`<pre style="white-space:pre-wrap;font:13px monospace;padding:20px">${esc(txt)}</pre>`);
+}
+function calcScenario(){
+ const rev=parseFloat(document.getElementById("scRevenue").value), margin=parseFloat(document.getElementById("scMargin").value.replace("%",""))/100, mult=parseFloat(document.getElementById("scMult").value), shares=parseFloat(document.getElementById("scShares").value);
+ if([rev,margin,mult,shares].some(x=>!Number.isFinite(x)||x<=0)){document.getElementById("scenarioResult").textContent="Renseigne 4 hypothèses positives.";return}
+ const fcf=rev*margin, equity=fcf*mult, per=equity/shares;
+ document.getElementById("scenarioResult").innerHTML=`FCF terminal = <b>${fmt(fcf,"money")}</b> · valeur des capitaux propres = <b>${fmt(equity,"money")}</b> · valeur par action = <b>${fmt(per)}</b>. <span class="small">Hypothèses utilisateur — pas des données observées.</span>`;
+}
+function openKoyfin(){window.open("https://app.koyfin.com/chart","_blank")}
+function exportPackage(){const b=new Blob([JSON.stringify(state,null,2)],{type:"application/json"}),a=document.createElement("a");a.href=URL.createObjectURL(b);a.download=`equity-analysis-${state.company?.ticker||"unknown"}.json`;a.click();URL.revokeObjectURL(a.href)}
+</script>
+
+<div id="embeddedBackend" style="display:none"></div>
+<script>
+const EMBEDDED_SEC_USER_AGENT = "Equity Intelligence (guets2000@hotmail.com)";
+const BACKEND_HINT = `SEC_USER_AGENT=${EMBEDDED_SEC_USER_AGENT}`;
+function showSetupHelp(e){
+  let msg = "Erreur de connexion.\n\n";
+  msg += "1) Vérifie que le backend Python est lancé sur http://127.0.0.1:8000\n";
+  msg += "2) Vérifie que Python a accès à Internet\n";
+  msg += "3) Le User-Agent SEC configuré est : " + EMBEDDED_SEC_USER_AGENT + "\n";
+  msg += "4) Aucun mot de passe SEC n'est nécessaire pour les API publiques.\n\n";
+  msg += "Détail : " + (e?.message || e || "inconnu");
+  alert(msg);
+}
+</script>
+<!-- EMBEDDED PYTHON BACKEND START -->
+<script type="text/plain" id="equityBackendPython">
+"""
+Equity Intelligence v2 — SEC/XBRL backend
+Usage:
+  pip install fastapi uvicorn requests
+  set SEC_USER_AGENT="Your Name your@email.com"
+  uvicorn equity_backend_sec:app --reload --port 8000
+
+The backend deliberately keeps SEC calls server-side because data.sec.gov does not support CORS.
+It resolves ticker -> CIK -> submissions -> recent filings -> companyfacts -> normalized metrics.
+No market-data or consensus estimates are fabricated here.
+"""
+
+import os, re, math, json
+try:
+    from dotenv import load_dotenv
+    load_dotenv()
+except ImportError:
+    pass
+from datetime import datetime, timezone
+from typing import Any, Dict, List, Optional
+import requests
+from fastapi import FastAPI, HTTPException
+from fastapi.middleware.cors import CORSMiddleware
+
+APP = FastAPI(title="Equity Intelligence SEC Engine", version="0.2")
+APP.add_middleware(CORSMiddleware, allow_origins=["*"], allow_methods=["*"], allow_headers=["*"])
+
+UA = os.getenv("SEC_USER_AGENT", "Equity Intelligence (guets2000@hotmail.com)")
+HEADERS = {"User-Agent": UA, "Accept-Encoding": "gzip, deflate"}
+if not UA or "@" not in UA:
+    raise RuntimeError("SEC_USER_AGENT doit contenir un nom/application et une adresse e-mail valide.")
+SESSION = requests.Session()
+SESSION.headers.update(HEADERS)
+TIMEOUT = 30
+SEC_MIN_REQUEST_INTERVAL = 0.25
+
+TICKER_URL = "https://www.sec.gov/files/company_tickers.json"
+SUB_URL = "https://data.sec.gov/submissions/CIK{cik}.json"
+FACTS_URL = "https://data.sec.gov/api/xbrl/companyfacts/CIK{cik}.json"
+
+STANDARD_TAGS = {
+    "revenue":["Revenues","RevenueFromContractWithCustomerExcludingAssessedTax","SalesRevenueNet"],
+    "gross_profit":["GrossProfit"],
+    "operating_income":["OperatingIncomeLoss"],
+    "net_income":["NetIncomeLoss"],
+    "cfo":["NetCashProvidedByUsedInOperatingActivities"],
+    "capex":["PaymentsToAcquirePropertyPlantAndEquipment","PaymentsToAcquireProductiveAssets"],
+    "assets":["Assets"],
+    "cash":["CashAndCashEquivalentsAtCarryingValue","CashCashEquivalentsRestrictedCashAndRestrictedCashEquivalents"],
+    "equity":["StockholdersEquity","StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest"],
+    "current_debt":["ShortTermBorrowings","LongTermDebtCurrent","LongTermDebtAndFinanceLeaseObligationsCurrent"],
+    "noncurrent_debt":["LongTermDebtNoncurrent","LongTermDebtAndFinanceLeaseObligationsNoncurrent"]
+}
+
+def sec_get(url):
+    r=SESSION.get(url,timeout=TIMEOUT)
+    r.raise_for_status()
+    return r.json()
+
+def to_float(v):
+    try:
+        return float(v)
+    except Exception:
+        return None
+
+def pick_unit(units: Dict[str, Any], preferred=("USD","shares","USD/shares")):
+    for u in preferred:
+        if u in units: return u, units[u]
+    if units:
+        u=next(iter(units)); return u,units[u]
+    return None,[]
+
+def find_concepts(facts, metric):
+    out=[]
+    taxonomy_order=["us-gaap","ifrs-full"]
+    for tax in taxonomy_order:
+        group=facts.get("facts",{}).get(tax,{})
+        for tag in STANDARD_TAGS[metric]:
+            if tag in group:
+                out.append((tax,tag,group[tag]))
+    return out
+
+def quality_source(source_id, source_name, filing_url=None, accession=None):
+    return dict(sourceId=source_id,source_name=source_name,filing_url=filing_url,accession=accession,
+                retrieved_at=datetime.now(timezone.utc).isoformat())
+
+def select_duration_fact(arr, forms=("10-K","10-Q"), annual=False):
+    candidates=[]
+    for x in arr:
+        if x.get("form") not in forms: continue
+        val=to_float(x.get("val"))
+        if val is None or not x.get("end"): continue
+        start=x.get("start")
+        if not start: continue
+        try:
+            days=(datetime.fromisoformat(x["end"])-datetime.fromisoformat(start)).days
+        except Exception: continue
+        if annual:
+            if 320<=days<=410 and x.get("form")=="10-K": candidates.append(x)
+        else:
+            if 60<=days<=110: candidates.append(x)
+    candidates.sort(key=lambda x:(x.get("end",""), x.get("filed","")), reverse=True)
+    return candidates
+
+def annual_history(facts, metric):
+    concepts=find_concepts(facts,metric)
+    best={}
+    for tax,tag,meta in concepts:
+        unit, arr=pick_unit(meta.get("units",{}),preferred=("USD",))
+        for x in select_duration_fact(arr,annual=True):
+            year=x["end"][:4]
+            if year not in best:
+                best[year]=(to_float(x["val"]),tax,tag,x)
+    return best
+
+def latest_annual(facts,metric):
+    h=annual_history(facts,metric)
+    if not h:return None
+    year=max(h)
+    val,tax,tag,x=h[year]
+    return dict(value=val,year=year,taxonomy=tax,tag=tag,form=x.get("form"),period_end=x.get("end"),
+                filing_date=x.get("filed"),fy=x.get("fy"),fp=x.get("fp"))
+
+def latest_quarter(facts,metric):
+    concepts=find_concepts(facts,metric)
+    candidates=[]
+    for tax,tag,meta in concepts:
+        unit,arr=pick_unit(meta.get("units",{}),preferred=("USD",))
+        for x in select_duration_fact(arr,forms=("10-Q","10-K"),annual=False):
+            val=to_float(x.get("val"))
+            if val is not None:candidates.append((x.get("end",""),val,tax,tag,x))
+    if not candidates:return None
+    candidates.sort(reverse=True,key=lambda z:z[0])
+    end,val,tax,tag,x=candidates[0]
+    return dict(value=val,taxonomy=tax,tag=tag,form=x.get("form"),period_start=x.get("start"),period_end=end,
+                filing_date=x.get("filed"),fy=x.get("fy"),fp=x.get("fp"))
+
+def latest_instant(facts,metric):
+    concepts=find_concepts(facts,metric)
+    candidates=[]
+    for tax,tag,meta in concepts:
+        unit,arr=pick_unit(meta.get("units",{}),preferred=("USD",))
+        for x in arr:
+            if x.get("form") not in ("10-K","10-Q","20-F","40-F"): continue
+            v=to_float(x.get("val"))
+            if v is not None and x.get("end"):candidates.append((x.get("end",""),v,tax,tag,x))
+    if not candidates:return None
+    candidates.sort(reverse=True,key=lambda z:z[0])
+    end,val,tax,tag,x=candidates[0]
+    return dict(value=val,taxonomy=tax,tag=tag,form=x.get("form"),period_end=end,filing_date=x.get("filed"),fy=x.get("fy"),fp=x.get("fp"))
+
+def source_for(cik,filing_meta):
+    acc=filing_meta.get("accessionNumber")
+    doc=filing_meta.get("primaryDocument")
+    url=f"https://www.sec.gov/Archives/edgar/data/{int(cik)}/{acc.replace('-','')}/{doc}" if acc and doc else None
+    return quality_source(f"sec:{cik}:{acc or ''}", "SEC EDGAR", url, acc)
+
+def build_company(symbol):
+    tickers=sec_get(TICKER_URL)
+    rec=None
+    for _,v in tickers.items():
+        if v.get("ticker","").upper()==symbol.upper():
+            rec=v;break
+    if not rec: raise HTTPException(404,"Ticker not found in SEC company_tickers.json")
+    cik=str(rec["cik_str"]).zfill(10)
+    sub=sec_get(SUB_URL.format(cik=cik))
+    facts=sec_get(FACTS_URL.format(cik=cik))
+    recent=sub.get("filings",{}).get("recent",{})
+    forms=["10-K","10-Q","20-F","40-F","6-K"]
+    filings=[]
+    for i,form in enumerate(recent.get("form",[])):
+        if form not in forms: continue
+        filings.append({
+            "filing_date":recent["filingDate"][i],"form":form,"period":recent["reportDate"][i],
+            "accession":recent["accessionNumber"][i],"primary_document":recent["primaryDocument"][i],
+            **source_for(cik,{
+                "accessionNumber":recent["accessionNumber"][i],
+                "primaryDocument":recent["primaryDocument"][i]
+            })
+        })
+        if len(filings)>=20:break
+
+    latest_k = max([f for f in filings if f["form"] in ("10-K","20-F","40-F")],key=lambda f:f["filing_date"],default={})
+    base_source=source_for(cik,latest_k)
+
+    metrics={}
+    for metric in STANDARD_TAGS:
+        x=latest_annual(facts,metric) or latest_quarter(facts,metric) or latest_instant(facts,metric)
+        if not x: continue
+        metrics[metric] = {**x, **base_source, "method":"direct XBRL fact", "canonical_metric":metric}
+
+    def m(k):return metrics.get(k,{}).get("value")
+    revenue=m("revenue"); gp=m("gross_profit"); oi=m("operating_income"); ni=m("net_income"); cfo=m("cfo"); capex=m("capex")
+    assets=m("assets"); cash=m("cash"); eq=m("equity"); cd=m("current_debt"); ncd=m("noncurrent_debt")
+    fcf=(cfo-capex) if cfo is not None and capex is not None else None
+    ratios={}
+    def ratio(name,val,method):
+        if val is not None: ratios[name]={"value":val,"method":method,**base_source}
+    if revenue: 
+        ratio("gross_margin",gp/revenue if gp is not None else None,"Gross profit / Revenue")
+        ratio("operating_margin",oi/revenue if oi is not None else None,"Operating income / Revenue")
+        ratio("fcf_margin",fcf/revenue if fcf is not None else None,"(CFO - Capex) / Revenue")
+        ratio("cfo_margin",cfo/revenue if cfo is not None else None,"CFO / Revenue")
+    if eq and ni: ratio("roe",ni/eq,"Net income / ending equity (simplified; use average equity for production)")
+    invested=(eq+cd+ncd-cash) if all(v is not None for v in [eq,cd,ncd,cash]) else None
+    if invested and oi:
+        # Simplified ROIC intentionally disclosed; production version should adjust tax/NOPAT and average invested capital.
+        ratio("roic",oi/invested,"Operating income / (Equity + debt - cash), simplified; NOPAT/average invested capital preferred")
+    if assets and (cd is not None or ncd is not None):
+        debt=(cd or 0)+(ncd or 0);ratio("debt_to_assets",debt/assets,"(Current debt + non-current debt) / assets")
+
+    history={}
+    for metric in ["revenue","gross_profit","operating_income","net_income","cfo","capex"]:
+        for year,(val,tax,tag,x) in annual_history(facts,metric).items():
+            history.setdefault(year,{})[metric]=val
+            history[year]["source"]={**base_source,"taxonomy":tax,"tag":tag,"period_end":x.get("end"),"form":x.get("form")}
+    hist=[]
+    for year in sorted(history,reverse=True)[:10]:
+        z=history[year];z["year"]=year;z["fcf"]=(z.get("cfo")-z.get("capex")) if z.get("cfo") is not None and z.get("capex") is not None else None;hist.append(z)
+
+    # Facts: selected canonical facts only, with full provenance.
+    facts_rows=[]
+    for metric in ["revenue","gross_profit","operating_income","net_income","cfo","capex","assets","cash","equity"]:
+        x=latest_annual(facts,metric) or latest_quarter(facts,metric) or latest_instant(facts,metric)
+        if x:
+            facts_rows.append({**x,"canonical_metric":metric,**base_source})
+
+    # Quality is evidence coverage, not investment quality.
+    required=["revenue","operating_income","cfo","capex","assets","cash","equity"]
+    coverage=sum(1 for k in required if k in metrics)/len(required)
+    quality=int(round(100*coverage))
+    signals={}
+    if len(hist)>=2 and hist[1].get("revenue"):
+        g=(hist[0].get("revenue")/hist[1]["revenue"]-1) if hist[0].get("revenue") is not None else None
+        signals["growth"]={"label":f"{g*100:.1f}% YoY" if g is not None else "—","reason":"Revenue annual growth from primary XBRL facts."}
+    if "operating_margin" in ratios: signals["margin"]={"label":f"{ratios['operating_margin']['value']*100:.1f}%","reason":"Current operating margin."}
+    if "fcf_margin" in ratios: signals["cash"]={"label":f"{ratios['fcf_margin']['value']*100:.1f}%","reason":"FCF margin calculated from CFO and Capex."}
+    if "debt_to_assets" in ratios: signals["balance"]={"label":f"{ratios['debt_to_assets']['value']*100:.1f}%","reason":"Debt / assets using identified debt tags."}
+    signals["capital"]={"label":"À analyser","reason":"Share count/SBC/buyback pipeline requires additional facts and notes."}
+    signals["evidence"]={"label":f"{quality}%","reason":"Coverage of required SEC/XBRL metric families."}
+
+    components={}
+    components["Evidence"]= {"score":quality,"reason":"Coverage of required primary financial facts."}
+    components["Growth"]= {"score":50,"reason":"Automated engine intentionally avoids converting one growth observation into a business-quality score."}
+    components["Margins"]= {"score":50,"reason":"Needs multi-year trend and peer comparison."}
+    components["Balance"]= {"score":50,"reason":"Needs maturities, leases and net debt context."}
+    components["Moat"]= {"score":None,"reason":"Qualitative evidence must be sourced separately."}
+    total=round(sum(v["score"] for v in components.values() if isinstance(v["score"],(int,float)))/max(1,sum(1 for v in components.values() if isinstance(v["score"],(int,float)))))
+    audit=[]
+    for name,v in metrics.items():
+        audit.append({"id":f"metric:{name}","metric":name,"value":v.get("value"),"method":v.get("method"),"source_name":v.get("source_name"),"filing_url":v.get("filing_url"),"retrieved_at":v.get("retrieved_at"),"tag":v.get("tag"),"period_end":v.get("period_end"),"unit":v.get("unit")})
+    for name,v in ratios.items():
+        audit.append({"id":f"ratio:{name}","metric":name,"value":v.get("value"),"formula":v.get("method"),"source_name":v.get("source_name"),"filing_url":v.get("filing_url"),"retrieved_at":v.get("retrieved_at")})
+
+    return {
+        "company":{"ticker":symbol.upper(),"name":sub.get("name"),"cik":cik,"exchange":sub.get("exchanges",[None])[0] if sub.get("exchanges") else None,
+                   "jurisdiction":sub.get("stateOfIncorporation"),"form_family":"SEC/US","taxonomy":"US-GAAP / XBRL"},
+        "filings":filings,"facts":facts_rows,"metrics":{k:(v|{"kind":"money"}) for k,v in metrics.items()},
+        "ratios":ratios,"history":hist,"signals":signals,"quality":{"score":quality,"required":required},
+        "score":{"total":total,"components":components,"interpretation":"Score partiel : ne pas interpréter comme une recommandation tant que qualitative, peers et valorisation ne sont pas documentés."},
+        "audit":audit
+    }
+
+@APP.get("/health")
+def health():
+    return {"ok":True,"service":"Equity Intelligence SEC Engine","retrieved_at":datetime.now(timezone.utc).isoformat()}
+
+@APP.get("/api/company")
+def company(symbol:str):
+    symbol=symbol.strip().upper()
+    if not re.fullmatch(r"[A-Z0-9.\-]{1,12}",symbol):
+        raise HTTPException(400,"Invalid symbol")
+    try:
+        return build_company(symbol)
+    except requests.HTTPError as e:
+        raise HTTPException(502,f"SEC request failed: {e}")
+    except Exception as e:
+        raise HTTPException(500,str(e))
+</script>
+<!-- EMBEDDED PYTHON BACKEND END -->
+</body>
+</html>
