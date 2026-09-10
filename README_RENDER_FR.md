@@ -1,4 +1,4 @@
-# Equity Intelligence V6 — déploiement Render
+# Equity Intelligence V7 — déploiement Render
 
 ## Architecture
 
@@ -38,14 +38,17 @@ Le backend récupère :
 6. LTM et ratios ;
 7. provenance / accession / lien SEC.
 
-## Reconstruction trimestrielle
+## Reconstruction trimestrielle — correction V7
 
 Pour les mesures de flux :
 
-- Q1 = flux trimestriel direct lorsque disponible ;
-- Q2 = cumul 6 mois − Q1 lorsque seul le YTD est publié ;
-- Q3 = cumul 9 mois − cumul 6 mois ;
-- Q4 = exercice annuel − Q1 − Q2 − Q3.
+- Les périodes sont regroupées par **année fiscale (`fy`) et `fp`**, et non par année civile.
+- Q1/Q2/Q3 privilégient un fait XBRL de **3 mois** issu du 10-Q.
+- Si le 3 mois n’existe pas, Q2 = cumul 6 mois − Q1.
+- Si le 3 mois n’existe pas, Q3 = cumul 9 mois − cumul 6 mois.
+- Q4 = exercice annuel FY − Q1 − Q2 − Q3.
+- Les amendements sont arbitrés par la date de dépôt la plus récente.
+- Le tableau conserve pour chaque trimestre la méthode et le fait XBRL source dans `provenance`.
 
 Capex est normalisé en sortie positive : `FCF = CFO − |Capex|`.
 
@@ -54,7 +57,8 @@ Capex est normalisé en sortie positive : `FCF = CFO − |Capex|`.
 Les EPS trimestriels ne sont **jamais** fabriqués en faisant `EPS annuel − EPS Q1 − EPS Q2 − EPS Q3`.
 
 - EPS trimestriel rapporté : conservé tel quel.
-- À défaut, EPS trimestriel = résultat net trimestriel / actions diluées moyennes trimestrielles lorsque ces deux données sont disponibles.
+- À défaut, Q1/Q2/Q3 peuvent utiliser résultat net trimestriel / actions diluées moyennes du même `fy`/`fp`.
+- Q4 n’est jamais obtenu par soustraction d’EPS : il reste vide si aucun EPS trimestriel fiable n’est disponible.
 - Si Q4 ne dispose pas d'un EPS trimestriel exploitable, le dashboard laisse Q4 EPS vide plutôt que de fabriquer une valeur.
 - L'EPS LTM peut utiliser le résultat net LTM / moyenne annuelle diluée lorsqu'il n'est pas possible de sommer quatre EPS trimestriels fiables.
 - Les actions pondérées ne sont jamais soustraites comme un flux YTD.
@@ -107,3 +111,15 @@ Les projections par action tiennent compte de la dilution/du rachat via :
 6. Tester `/health` et ensuite analyser un ticker comme `MSFT` ou `NVDA`.
 
 Le secret Twelve Data doit rester côté Render ; ne pas l'inclure dans le dépôt.
+
+## Graphiques V7
+
+Les graphiques CA, bénéfice net et FCF sont désormais des **bar charts purs** : aucune polyline ni aucun point ne sont superposés. Les valeurs sont affichées au-dessus des barres. Les graphiques de marges/croissance restent linéaires.
+
+## Tests effectués
+
+Le backend a été compilé après modification et la reconstruction trimestrielle a été testée sur des cas synthétiques :
+- FY 100, Q1 20, Q2 25, Q3 30 → Q4 25 ;
+- FY 100, Q1 20, H1 45, M9 75 → Q2 25, Q3 30, Q4 25.
+
+Ces tests vérifient les formules sans dépendre d’un jeu de données SEC particulier.
