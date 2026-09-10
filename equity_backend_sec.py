@@ -113,7 +113,7 @@ def quarter_series(facts,metric):
     for fy,arr in all_by_fy.items():
         buckets={}
         for x in arr:
-            if 150<=x["days"]<=205: buckets[180]=max(buckets.get(180,[x],key=lambda z:str(z.get("filed","")))) if buckets.get(180) else x
+            if 150<=x["days"]<=205: buckets[180]=max([buckets[180],x],key=lambda z:str(z.get("filed",""))) if buckets.get(180) else x
             elif 235<=x["days"]<=305: buckets[270]=max([z for z in arr if 235<=z["days"]<=305],key=lambda z:str(z.get("filed","")))
             elif 70<=x["days"]<=110: buckets[90]=max([z for z in arr if 70<=z["days"]<=110],key=lambda z:str(z.get("filed","")))
         # Use latest 10-Q cumulative facts by period_end.

@@ -1,0 +1,5 @@
+Equity Intelligence — Investor Quarterly — bugfix 2026-09-10
+- Corrected dict.get() positional/default bug in quarterly reconstruction.
+- Quarterly reconstruction: Q1/Q2/Q3/Q4.
+- LTM investor metrics, margins, FCF conversion and valuation inputs.
+- Optional Twelve Data market quote via TWELVEDATA_API_KEY.
